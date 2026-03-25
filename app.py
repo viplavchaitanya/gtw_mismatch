@@ -162,6 +162,29 @@ def invert_value_by_type(obj_type: str, attrs: List[Any]) -> str:
     else:
         return find_attr(attrs, ids=['Inversion','Invert','Inv'], contains_name=['invert','inversion'])
 
+def build_inversion_map_for_ntamc(base_df: pd.DataFrame, slice_literal: str) -> Dict[int, str]:
+    pattern = re.escape(slice_literal)
+
+    df = base_df[
+        base_df['path'].str.contains(pattern, na=False, regex=True)
+    ].copy()
+
+    df['ioa'] = df['field 1 address by default'].apply(_to_int_or_none)
+    df = df.dropna(subset=['ioa'])
+
+    df['Inversion'] = df['Inversion'].astype(str).str.strip()
+    df = df[df['Inversion'] != ""]
+
+    if df.empty:
+        return {}
+
+    agg = (
+        df.groupby('ioa')['Inversion']
+        .apply(lambda s: '\n'.join(sorted(set(v for v in s if v))))
+    )
+
+    return {int(k): v for k, v in agg.items()}
+    
 # =========================================
 # 1) Base extractor (GTW_Mismatch equivalent)
 # =========================================
@@ -578,6 +601,7 @@ def enrich_ntamc_workbook(xls_bytes: bytes,
     mismatch_map = build_gateway_mismatch_map(df_validated)
     scada_map    = build_scada_map_for_ntamc(base_df, ntamc_slice_literal)
     interop_map  = build_interoperability_map_failed_only(df_addr)
+    inversion_map = build_inversion_map_for_ntamc(base_df, ntamc_slice_literal)
 
     xls = pd.ExcelFile(io.BytesIO(xls_bytes), engine='openpyxl')
     descrepencies_rows: List[pd.DataFrame] = []
@@ -591,6 +615,8 @@ def enrich_ntamc_workbook(xls_bytes: bytes,
                 df['Gateway mismatch Remarks'] = ioa_series.map(lambda k: mismatch_map.get(k, "") if k is not None else "")
                 df['Mapping in database']      = ioa_series.map(lambda k: scada_map.get(k, "") if k is not None else "")
                 df['Interoperability Remarks'] = ioa_series.map(lambda k: interop_map.get(k, "") if k is not None else "")
+                df['Inversion'] = ioa_series.map(lambda k: inversion_map.get(k, "") if k is not None else "")
+
 
                 mask_desc = (df['Gateway mismatch Remarks'].astype(str).str.strip() != "") | \
                             (df['Interoperability Remarks'].astype(str).str.strip() != "")
