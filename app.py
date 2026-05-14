@@ -40,6 +40,7 @@ with st.sidebar:
     st.header("Options")
     apply_path_filter = st.checkbox("Apply PATH filter on XML", value=True)
     filter_keyword = st.text_input("PATH filter keyword", value="AMC")
+    st.caption("• Base Extractor (First Filter) is to eliminate RLDC signals.\n\n")
 
     # Default reference = 6 (override manual)
     reference_ports = st.number_input(
