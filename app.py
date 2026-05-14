@@ -48,8 +48,8 @@ with st.sidebar:
     )
 
     ntamc_path_slice_literal = st.text_input("Restrict 'Mapping in database' to PATH containing", value="GTW1 | NTAMC |")
-    st.caption("• Base Extractor (First Filter) is to eliminate RLDC signals.\n"
-               "• 'Mapping in database' is to select NTAMC port for merging with NTAMC List.\n"
+    st.caption("• Base Extractor (First Filter) is to eliminate RLDC signals.\n\n"
+               "• 'Mapping in database' is to select NTAMC port for merging with NTAMC List.\n\n"
                "• Reference ports are the number of T104 ports in gateway (excluding RLDC). Default Value is 6")
 
 # =========================
@@ -63,7 +63,7 @@ xls_file = st.file_uploader(
 )
 
 # New label requested
-run_btn = st.button("Run Validation steps and Map to Signal List", use_container_width=True)
+run_btn = st.button("Run Validation and Map to Signal List", use_container_width=True)
 
 # =================================
 # Shared helpers (from your modules)
@@ -690,7 +690,7 @@ if st.session_state["results_ready"] and not run_btn:
     with c1:
         if st.session_state["scada_xlsx_bytes"]:
             st.download_button(
-                label="Download SCADA validation.xlsx",
+                label="Download SCADA Mapping validation.xlsx",
                 data=st.session_state["scada_xlsx_bytes"],
                 file_name="scada_validation.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -699,7 +699,7 @@ if st.session_state["results_ready"] and not run_btn:
     with c2:
         if st.session_state["gtw_xlsx_bytes"]:
             st.download_button(
-                label="Download gateway_validations.xlsx",
+                label="Download Gateway Interoperability Remarks.xlsx",
                 data=st.session_state["gtw_xlsx_bytes"],
                 file_name="gateway_validations.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
