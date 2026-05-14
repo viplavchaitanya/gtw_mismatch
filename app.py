@@ -40,18 +40,18 @@ with st.sidebar:
     st.header("Options")
     apply_path_filter = st.checkbox("Apply PATH filter on XML", value=True)
     filter_keyword = st.text_input("PATH filter keyword", value="AMC")
-    st.caption("• Base Extractor (First Filter) is to eliminate RLDC signals.\n\n")
+    st.caption("Base Extractor Filter: To eliminate RLDC signals.\n\n")
 
     # Default reference = 6 (override manual)
     reference_ports = st.number_input(
         "Reference ports (override)", min_value=1, max_value=100000, value=6, step=1,
         help="Used by mapping validation: each IOA must appear exactly this many times."
     )
-
+    st.caption("Reference ports are the number of T104 ports in gateway (excluding RLDC). Default Value is 6\n\n")
+               
     ntamc_path_slice_literal = st.text_input("Restrict 'Mapping in database' to PATH containing", value="GTW1 | NTAMC |")
-    st.caption("• Base Extractor (First Filter) is to eliminate RLDC signals.\n\n"
-               "• 'Mapping in database' is to select NTAMC port for merging with NTAMC List.\n\n"
-               "• Reference ports are the number of T104 ports in gateway (excluding RLDC). Default Value is 6")
+    
+    st.caption("'Mapping in database':To select the port for merging with NTAMC List.\n\n")
 
 # =========================
 # File Uploaders (with resettable keys)
