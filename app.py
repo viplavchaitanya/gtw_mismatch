@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Tuple, Optional
 # =========================
 # Page & Session State init
 # =========================
-st.set_page_config(page_title="SAMAAN\nSignal Address Mismatch and Alignment Analyzer for NTAMC Ports in GE Gateways", layout="wide")
+st.set_page_config(page_title="SAMAAN", layout="wide")
 
 # -- Session state keys for persistence across reruns (so downloads don't "reset" the page)
 _defaults = {
@@ -31,7 +31,7 @@ for k, v in _defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
-st.title("NTAMC Mapping & Interoperability Validator")
+st.title("SAMAAN\nSignal Address Mismatch and Alignment Analyzer for NTAMC Ports in GE Gateways")
 
 # =========================
 # UI: Sidebar configuration
